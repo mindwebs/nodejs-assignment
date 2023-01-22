@@ -21,14 +21,28 @@ const uploadImage = async (key: string, tilefactor: number) => {
 
         const tilesFolder = `./uploads/output/${filename}/`;
 
-        let filePaths = [];
-        let count = 0, i = 1, j = 1;
+        let filePaths: string[] = [], res = [];
+        let count = 0, i = 1, j = 1, k = 0;
 
         fs.readdirSync(tilesFolder).forEach(file => {
             count++;
+            filePaths.push(file);
         });
 
         newFile.tiles = count;
+
+        for (i = 1; i <= tilefactor; i++) {
+            for (j = 1; j <= tilefactor; j++) {
+                if (k === count) break;
+                const key = filePaths[k];
+                const position = `${i}, ${j}`;
+                k++;
+
+                res.push({ position: position, key: key });
+            }
+        }
+
+        newFile.tile_keys = res;
 
         await newFile.save();
 
