@@ -7,7 +7,10 @@ interface Tile {
 interface imageSchemaDto extends mongoose.Document {
     key: string;
     tiles: number;
-    tile_keys: object;
+    tile_keys: {
+        row: number,
+        paths: string[]
+    }[];
 }
 
 export {

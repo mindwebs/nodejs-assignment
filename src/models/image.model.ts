@@ -10,7 +10,14 @@ const imageSchema : Schema<imageSchemaDto> = new Schema({
         type: Number,
     },
     tile_keys: {
-        type: Object,
+        type: [{
+            row: {
+                type: Number,
+            },
+            paths: [{
+                type: String
+            }]
+        }],
     }
 });
 
