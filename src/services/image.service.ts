@@ -14,7 +14,7 @@ const uploadImage = async (key: string, tilefactor: number) => {
             key: key,
         });
 
-        const command = `cd uploads && python3 test.py ${key} ${tilefactor}`;
+        const command = `cd uploads && python3 script.py ${key} ${tilefactor}`;
 
         await shellExec(command);
 
