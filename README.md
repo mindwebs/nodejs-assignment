@@ -7,10 +7,10 @@
 <div>
 <h2>Contents</h2>
 <ol>
-  <li><a href="https://github.com/Arka2001/social-media-backend#description"> Description</a></li>
-  <li><a href="https://github.com/Arka2001/social-media-backend#project-structure"> Project Structure</a></li>
-  <li><a href="https://github.com/Arka2001/social-media-backend#getting-started"> Getting Started</a></li>
-  <li><a href="https://github.com/Arka2001/social-media-backend#built-with-"> Built With</a></li>
+  <li><a href="https://github.com/mindwebs/nodejs-assignment#description"> Description</a></li>
+  <li><a href="https://github.com/mindwebs/nodejs-assignment#project-structure"> Project Structure</a></li>
+  <li><a href="https://github.com/mindwebs/nodejs-assignment#getting-started"> Getting Started</a></li>
+  <li><a href="https://github.com/mindwebs/nodejs-assignment#built-with-"> Built With</a></li>
 </ol>
 </div>
 
@@ -19,7 +19,7 @@
 <div>
 <h2>Description</h2>
 <p>
-  This project has been developed by <a href="https://github.com/Arka2001">Sayantan Dasgupta</a> as per instructions given by <a href="https://github.com/dipan29">Dipan Roy</a>.
+  This project has been developed by <a href="https://github.com/sayantandasgupta">Sayantan Dasgupta</a> as per instructions given by <a href="https://github.com/dipan29">Dipan Roy</a>.
 
   This REST API has a total of 4 routes. Using this we can upload an image, and divide it into different tiles, as per the tilefactor provided by the user
 
