@@ -2,6 +2,7 @@ import Image from "../models/image.model";
 import shellExec from "shell-exec";
 import fs from "fs";
 import * as Util from "../utils/commonUtils";
+import { Tile } from "../dtos/image.dtos";
 
 const uploadImage = async (key: string, tilefactor: number) => {
     try {
@@ -30,19 +31,24 @@ const uploadImage = async (key: string, tilefactor: number) => {
         });
 
         newFile.tiles = count;
+        let newTileFactor = Math.sqrt(count);
+        let tile_keys : Tile = {};
 
-        for (i = 1; i <= tilefactor; i++) {
-            for (j = 1; j <= tilefactor; j++) {
+        for (i = 1; i <= newTileFactor; i++) {
+            if (k === count) break;
+            let temp = [];
+            for (j = 1; j <= newTileFactor; j++) {
                 if (k === count) break;
-                const key = filePaths[k];
-                const position = `${i}, ${j}`;
+                
+                temp.push(filePaths[k]);
                 k++;
-
-                res.push({ position: position, key: key });
             }
+
+            temp = Util.sort_file(temp);
+            tile_keys[`${i}`] = temp;
         }
 
-        newFile.tile_keys = res;
+        newFile.tile_keys = tile_keys;
 
         await newFile.save();
 

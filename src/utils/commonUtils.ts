@@ -14,3 +14,20 @@ export const extract_file_name = (originalName : string) => {
 
     return text;
 }
+
+export const sort_file = (files : string[]) => {
+    files.sort((file1, file2) => {
+        let name1 = file1, name2 = file2;
+        name1 = name1.split('.')[0];
+        name1 = name1.split('_')[2];
+
+        name2 = name2.split('.')[0];
+        name2 = name2.split('_')[2];
+
+        if(Number(name1) > Number(name2)) return 1;
+        if(Number(name1) < Number(name2)) return -1;
+        return 0;
+    });
+
+    return files;
+}
