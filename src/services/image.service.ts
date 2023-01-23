@@ -34,10 +34,10 @@ const uploadImage = async (key: string, tilefactor: number) => {
             let name1 = file1, name2 = file2;
             name1 = name1.split('.')[0];
             name1 = name1.split('_')[1];
-    
+
             name2 = name2.split('.')[0];
             name2 = name2.split('_')[1];
-    
+
             if (Number(name1) > Number(name2)) return 1;
             if (Number(name1) < Number(name2)) return -1;
             return 0;
@@ -82,12 +82,15 @@ const listTilePaths = async (key: string, position: number[], radius: number) =>
 
         if (!existingFile) return { code: 404, message: "No Such Image found" };
 
+        let r = radius, center_x = position[0], center_y = position[1];
+
+        if (center_x > existingFile.tile_keys.length || center_y > existingFile.tile_keys.length) return { code: 400, message: "Given position exceeding tile matrix dimensions. Please give a correct position pertaining to the dimensions of the image" };
+
         let starting_x = 0, starting_y = 0;
         let bottomLeft_x = 0, bottomLeft_y = 0;
         let topRight_x = 0, topRight_y = 0;
         let ending_x = 0, ending_y = 0;
         let numRows = 0, numCols = 0;
-        let r = radius, center_x = position[0], center_y = position[1];
 
         // The below set of codes represent how to find the four corner positions of the sub-matrix
 
@@ -120,11 +123,11 @@ const listTilePaths = async (key: string, position: number[], radius: number) =>
         let positions = [], paths = [];
 
         for (let i = starting_x - 1; i < starting_x + numRows - 1; i++) {
-            const index = `${i+1}`;
+            const index = `${i + 1}`;
             let temp = [], paths_ith_row: any[] = [];
 
             existingFile.tile_keys.forEach((tile_key: any) => {
-                if(tile_key.row === i+1) {
+                if (tile_key.row === i + 1) {
                     paths_ith_row = tile_key.paths;
                     return;
                 }
@@ -157,7 +160,55 @@ const listTilePaths = async (key: string, position: number[], radius: number) =>
     }
 }
 
+const getFullImage = async (key: string) => {
+    try {
+        const existingImage = await Image.findOne({ key: key });
+
+        if (!existingImage) return { code: 404, message: "Not Found" };
+
+        const fileLocation = `./uploads/${existingImage.key}`;
+
+        const file = fs.createReadStream(fileLocation);
+
+        if (!file) return { code: 400, message: "File Not Found in storage" };
+
+        return { code: 200, file: file, message: "OK" };
+
+    } catch (err: any) {
+        if (process.env.DEBUG === "TRUE") console.log(err);
+        if (err.name === "ValidationError") return { code: 400, message: "Wrong Input Format" };
+        return { code: 500, message: "Internal Server Error" };
+    }
+}
+
+const getTileImage = async (path: string) => {
+    try {
+        let tile_name = path.split('.')[0], ext = path.split('.')[1];
+        let folder_name = tile_name.split('_')[0];
+        let key = folder_name + "." + ext;
+
+        const existingImage = await Image.findOne({ key: key });
+
+        if (!existingImage) return { code: 404, message: "No such image exists" };
+
+        const fileLocation = `./uploads/output/${folder_name}/${path}`;
+
+        const file = fs.createReadStream(fileLocation);
+
+        if (!file) return { code: 500, message: "Internal Server error" };
+
+        return { code: 200, file: file, message: "OK" };
+
+    } catch (err: any) {
+        if (process.env.DEBUG === "TRUE") console.log(err);
+        if (err.name === "ValidationError") return { code: 400, message: "Wrong Input Format" };
+        return { code: 500, message: "Internal Server Error" };
+    }
+}
+
 export {
     uploadImage,
     listTilePaths,
+    getFullImage,
+    getTileImage,
 }

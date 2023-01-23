@@ -21,7 +21,25 @@ const ListTilePaths = async (req: Request, res: Response) => {
     return ResponseCreator.generateResponse(res, code, result, message);
 }
 
+const GetFullImage = async (req: Request, res: Response) => {
+    const { path } = req.params;
+
+    const { code, file, message } = await imageService.getFullImage(path);
+
+    file?.pipe(res);
+}
+
+const GetTileImage = async(req: Request, res: Response) => {
+    const {path} = req.params;
+
+    const{code, file, message} = await imageService.getTileImage(path);
+
+    file?.pipe(res);
+}
+
 export {
     UploadImage,
     ListTilePaths,
+    GetFullImage,
+    GetTileImage,
 }

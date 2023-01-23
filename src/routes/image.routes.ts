@@ -19,7 +19,15 @@ const fileStorage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: fileStorage });
+const fileFilter = function (req: any, file: any, cb: any) {
+    if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
+        cb(null, true);
+    }
+
+    cb(null, false, Error("Only jpg or png files allowed"));
+}
+
+const upload = multer({ storage: fileStorage, fileFilter: fileFilter });
 
 imageRouter.post(
     '/upload',
@@ -30,6 +38,16 @@ imageRouter.post(
 imageRouter.post(
     '/list-paths',
     imageController.ListTilePaths,
+);
+
+imageRouter.get(
+    '/get-full-image/:path',
+    imageController.GetFullImage,
+);
+
+imageRouter.get(
+    '/get-tile-image/:path',
+    imageController.GetTileImage
 );
 
 export default imageRouter;
