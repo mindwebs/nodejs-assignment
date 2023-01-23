@@ -27,4 +27,9 @@ imageRouter.post(
     imageController.UploadImage,
 );
 
+imageRouter.post(
+    '/list-paths',
+    imageController.ListTilePaths,
+);
+
 export default imageRouter;

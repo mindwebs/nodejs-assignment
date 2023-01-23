@@ -8,11 +8,20 @@ const UploadImage = async (req: Request, res: Response) => {
 
     const key = image!.filename;
 
-    const {code, result=null, message} = await imageService.uploadImage(key, tilefactor);
+    const { code, result = null, message } = await imageService.uploadImage(key, tilefactor);
+
+    return ResponseCreator.generateResponse(res, code, result, message);
+}
+
+const ListTilePaths = async (req: Request, res: Response) => {
+    const { key, position, radius } = req.body;
+
+    const { code, result = null, message } = await imageService.listTilePaths(key, position, radius);
 
     return ResponseCreator.generateResponse(res, code, result, message);
 }
 
 export {
     UploadImage,
+    ListTilePaths,
 }

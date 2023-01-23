@@ -9,14 +9,16 @@ const imageSchema : Schema<imageSchemaDto> = new Schema({
     tiles: {
         type: Number,
     },
-    tile_keys: [{
-        position: {
-            type: String,
-        },
-        key: {
-            type: String
-        }
-    }]
+    tile_keys: {
+        type: [{
+            row: {
+                type: Number,
+            },
+            paths: [{
+                type: String
+            }]
+        }],
+    }
 });
 
 const Image : Model<imageSchemaDto> = model('Image', imageSchema);
